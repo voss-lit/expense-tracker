@@ -1,24 +1,16 @@
+
 {
-  "name": "expense-tracker-web-app",
+  "name": "expense-tracker",
   "version": "1.0.0",
+  "description": "An expense tracker with live currency conversion",
   "type": "module",
-  "description": "",
-  "main": "index.js",
   "scripts": {
-  "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "lint": "eslint ."
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/voss-lit/expense-tracker.git"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/voss-lit/expense-tracker/issues"
-  },
-  "homepage": "https://github.com/voss-lit/expense-tracker#readme",
   "devDependencies": {
-    "jest": "^30.5.2"
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "jest": "^29.7.0"
   }
 }

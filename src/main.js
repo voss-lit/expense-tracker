@@ -1,5 +1,7 @@
+
 import { fetchExchangeRates } from "./api.js";
 import { convertCurrency } from "./utils.js";
+
 import {
     expenses,
     addExpense,
@@ -11,56 +13,23 @@ import {
     updatedSummary
 } from "./ui.js";
 
+// Access HTML elements
+const addButton = document.querySelector(".btn");
 
-const addButton = document.querySelector(".btn")
+const descriptionInput = document.getElementById("desc");
+const amountInput = document.getElementById("amount");
+const currencyInput = document.getElementById("currency");
+const categoryInput = document.getElementById("category");
 
-// variables accessing my webapp 
+const filterCategory = document.getElementById("filterCategory");
+const homeCurrency = document.getElementById("homeCurrency");
 
-const decriptionInput = document.getElementById("desc")
-const amountInput = document.getElementById("amount")
-const currencyInput = document.getElementById("currency")
-const categoryInput = document.getElementById("category")
-const totalAmount = document.getElementById("totalAmount")
-const transactionCount = document.getElementById("transactionCount")
-const filterCategory = document.getElementById("filterCategory")
-const homeCurrency = document.getElementById("homeCurrency")
-
-let exchangeRates = null
-let isLoadingRates = true
-let ratesError = null
+// Store the exchange rates returned by the API
+let exchangeRates = null;
 
 
-// Calculate the total expenses
-
-function calculateTotal() {
-    return expenses.reduce(function (total, expense) {
-        const convertedAmount = convertCurrency(
-            expense.amount,
-            expense.currency,
-            homeCurrency.value,
-            exchangeRates
-        );
-
-        return total + convertedAmount;
-    }, 0);
-}
-
-// display the expenses and handle deletion
-
+// Refresh the expense list
 function refreshExpenses() {
-    const expenseList = document.getElementById("expenseList");
-
-    if (isLoadingRates) {
-        expenseList.textContent = "Loading exchange rates...";
-        return;
-    }
-
-    if (ratesError) {
-        expenseList.textContent =
-            "Could not load exchange rates. Please check your connection and try again.";
-        return;
-    }
-
     displayExpenses(
         expenses,
         exchangeRates,
@@ -74,21 +43,53 @@ function refreshExpenses() {
     );
 }
 
-function handleAddExpense() {
+
+// Calculate the total expenses
+function calculateTotal() {
+    return expenses.reduce(function (sum, expense) {
+        let convertedAmount = expense.amount;
+
+        if (exchangeRates) {
+            convertedAmount = convertCurrency(
+                expense.amount,
+                expense.currency,
+                homeCurrency.value,
+                exchangeRates
+            );
+        }
+
+        return sum + convertedAmount;
+    }, 0);
+}
+
+
+// Refresh the displayed on the webpage
+function refreshSummary() {
+    updatedSummary(
+        expenses,
+        calculateTotal(),
+        homeCurrency.value
+    );
+}
+
+
+// adding a new expense
+addButton.addEventListener("click", function () {
     const description = descriptionInput.value.trim();
     const amount = Number(amountInput.value);
 
-    if (!description || amountInput.value.trim() === "" ||
-        !Number.isFinite(amount) || amount <= 0) {
+    // Validate the user's input
+    if (
+        description === "" ||
+        amountInput.value.trim() === "" ||
+        !Number.isFinite(amount) ||
+        amount <= 0
+    ) {
         alert("Please enter a description and a valid amount.");
         return;
     }
 
-    if (!exchangeRates || ratesError) {
-        alert("Exchange rates are unavailable. Please try again later.");
-        return;
-    }
-
+    // Creating an object
     const newExpense = {
         id: crypto.randomUUID(),
         description: description,
@@ -99,41 +100,46 @@ function handleAddExpense() {
 
     addExpense(newExpense);
 
-    descriptionInput.value = "";
-    amountInput.value = "";
-
     refreshExpenses();
     refreshSummary();
-}
 
-async function loadExchangeRates() {
-    isLoadingRates = true;
-    ratesError = null;
+    descriptionInput.value = "";
+    amountInput.value = "";
+});
 
+
+// Refresh expenses when the category filter changes
+filterCategory.addEventListener("change", function () {
     refreshExpenses();
+});
 
-    try {
-        exchangeRates = await fetchExchangeRates("USD");
-    } catch (error) {
-        ratesError = error.message;
-        console.error("Could not load exchange rates:", error);
-    } finally {
-        isLoadingRates = false;
 
-        refreshExpenses();
-        refreshSummary();
-    }
-}
-
-addButton.addEventListener("click", handleAddExpense);
-
+// Recalculate and redisplay expenses when the home currency changes
 homeCurrency.addEventListener("change", function () {
     refreshExpenses();
     refreshSummary();
 });
 
-filterCategory.addEventListener("change", function () {
-    refreshExpenses();
-});
+
+// Fetch exchange rates when the application starts
+async function loadExchangeRates() {
+    try {
+        exchangeRates = await fetchExchangeRates("USD");
+
+        console.log("Exchange rates loaded:", exchangeRates);
+    } catch (error) {
+        console.error(
+            "Could not load exchange rates:",
+            error.message
+        );
+    } finally {
+        refreshExpenses();
+        refreshSummary();
+    }
+}
+
+
+refreshExpenses();
+refreshSummary();
 
 loadExchangeRates();

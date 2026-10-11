@@ -1,10 +1,11 @@
 {
   "name": "expense-tracker-web-app",
   "version": "1.0.0",
+  "type": "module",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -16,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/voss-lit/expense-tracker/issues"
   },
-  "homepage": "https://github.com/voss-lit/expense-tracker#readme"
+  "homepage": "https://github.com/voss-lit/expense-tracker#readme",
+  "devDependencies": {
+    "jest": "^30.5.2"
+  }
 }

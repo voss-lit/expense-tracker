@@ -1,4 +1,16 @@
 import { fetchExchangeRates } from "./api.js";
+import { convertCurrency } from "./utils.js";
+import {
+    expenses,
+    addExpense,
+    deleteExpense
+} from "./state.js";
+
+import {
+    displayExpenses,
+    updatedSummary
+} from "./ui.js";
+
 
 const addButton = document.querySelector(".btn")
 

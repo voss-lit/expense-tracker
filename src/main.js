@@ -1,4 +1,4 @@
-
+import { fetchExchangeRates } from "./api.js";
 
 const addButton = document.querySelector(".btn")
 
@@ -92,6 +92,25 @@ function handleAddExpense() {
 
     refreshExpenses();
     refreshSummary();
+}
+
+async function loadExchangeRates() {
+    isLoadingRates = true;
+    ratesError = null;
+
+    refreshExpenses();
+
+    try {
+        exchangeRates = await fetchExchangeRates("USD");
+    } catch (error) {
+        ratesError = error.message;
+        console.error("Could not load exchange rates:", error);
+    } finally {
+        isLoadingRates = false;
+
+        refreshExpenses();
+        refreshSummary();
+    }
 }
 
 addButton.addEventListener("click", handleAddExpense);

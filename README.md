@@ -28,24 +28,21 @@ A simple, beginner-friendly web application that helps users record, manage, and
 
 ## Project Structure
 
-```text
-expense-tracker-web-app/
-├── index.html
-├── style.css
-├── package.json
-├── package-lock.json
-├── README.md
-├── eslint.config.js
-├── src/
-│   ├── api.js
-│   ├── main.js
-│   ├── state.js
-│   ├── ui.js
-│   └── utils.js
-├── tests/
-│   └── utils.test.js
-└── node_modules/
-```
+expense-tracker/
+--index.html
+-- style.css
+-- src/
+    - api.js
+    - main.js
+    - state.js
+    - ui.js
+    - utils.js
+--tests/
+   -utils.test.js
+   -package.json
+   -package-lock.json
+--eslint.config.js
+-- README.md
 
 **Note:** The `node_modules/` directory is generated when dependencies are installed and should not normally be committed to GitHub. The structure above reflects the intended project organization; adjust filenames if your actual project differs.
 
@@ -63,27 +60,19 @@ Before running the project, make sure you have installed:
 
 1. Clone the repository:
 
-   ```bash
-   git clone https://github.com/voss-lit/expense-tracker.git
-   ```
+git clone https://github.com/voss-lit/expense-tracker.git
 
 2. Navigate into the project directory:
 
-   ```bash
-   cd expense-tracker
-   ```
+cd expense-tracker
 
 3. Install the project dependencies:
 
-   ```bash
-   npm install
-   ```
+npm install
 
 4. Open the project in Visual Studio Code:
 
-   ```bash
    code .
-   ```
 
 ### Running the Application
 

@@ -91,9 +91,7 @@ The project uses Jest to test the currency conversion utility functions.
 
 Run the following command in the project root:
 
-```bash
 npm test
-```
 
 The test suite checks currency conversion calculations, including conversions between supported currencies and converting a currency into itself.
 
@@ -103,9 +101,7 @@ ESLint is used to help identify potential JavaScript errors and maintain consist
 
 Run the lint command with:
 
-```bash
 npm run lint
-```
 
 This command requires a working `lint` script in `package.json` and a compatible ESLint configuration.
 
